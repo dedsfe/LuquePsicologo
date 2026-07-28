@@ -11,14 +11,13 @@ import {
   type MotionValue,
 } from "motion/react";
 
-import { BOTAO_VIDRO, LINK_SUBLINHADO } from "@/lib/botoes";
-import { AGENDAR_URL, CONVERSAR_URL } from "@/lib/whatsapp";
+import { BOTAO_VIDRO } from "@/lib/botoes";
+import { AGENDAR_URL } from "@/lib/whatsapp";
 
 // TODO (André): copy provisória. Convite, não promessa (CFP).
 const FRASE =
   "Você não precisa saber por onde começar. Só precisa começar a falar.";
 const BOTAO = "Começar a conversa";
-const ALTERNATIVA = "Ou tirar uma dúvida antes";
 
 const SUAVE = [0.22, 1, 0.36, 1] as const;
 
@@ -53,21 +52,8 @@ export function Fecho() {
           ))}
         </p>
 
+        {/* O fecho é o último empurrão: uma saída só, o mesmo WhatsApp. */}
         <BotaoIma reduzirMovimento={reduzirMovimento} />
-
-        <motion.a
-          initial={reduzirMovimento ? false : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.8 }}
-          transition={{ duration: 1, delay: 0.45, ease: SUAVE }}
-          href={CONVERSAR_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-analytics="click_whatsapp"
-          className={`mt-8 ${LINK_SUBLINHADO}`}
-        >
-          {ALTERNATIVA}
-        </motion.a>
       </div>
     </section>
   );

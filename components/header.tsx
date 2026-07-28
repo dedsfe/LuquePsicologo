@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import { BOTAO_VIDRO, LINK_SUBLINHADO } from "@/lib/botoes";
-import { AGENDAR_URL, CONVERSAR_URL } from "@/lib/whatsapp";
+import { BOTAO_VIDRO } from "@/lib/botoes";
+import { AGENDAR_URL } from "@/lib/whatsapp";
 
 export function Header() {
   return (
@@ -36,13 +36,11 @@ export function Header() {
           pesa demais. Online e presencial.
         </p>
 
-        <div className="mt-10 flex flex-col items-center gap-5 md:flex-row md:gap-8">
+        {/* Uma porta só: duas chamadas lado a lado dividem a decisão de quem já
+            está inseguro pra pedir ajuda. Tudo cai no mesmo WhatsApp. */}
+        <div className="mt-10 flex justify-center">
           <a href={AGENDAR_URL} className={BOTAO_VIDRO}>
             <span className="relative">Agendar consulta</span>
-          </a>
-
-          <a href={CONVERSAR_URL} className={LINK_SUBLINHADO}>
-            Tirar uma dúvida antes
           </a>
         </div>
       </div>
