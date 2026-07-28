@@ -11,7 +11,7 @@ const NOME = "Luque Gonçalves";
 
 // O CFP exige o registro em material de divulgação — o rodapé é o lugar padrão.
 const CRP = "CRP 139094";
-const ASSINATURA = "psicanalista · atendimento online";
+const ASSINATURA = "psicólogo · atendimento online";
 
 const ATALHOS = [
   { rotulo: "Como funciona", href: "#como-funciona" },
