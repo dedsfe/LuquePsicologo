@@ -250,6 +250,62 @@
     }
   }
 
+  /* Link da barra: o mesmo material, mas só quando o ponteiro chega. Em repouso
+     é texto puro — três pílulas fixas roubariam o posto do CTA. */
+  .liquid-glass.liquid-glass--fantasma {
+    background: none;
+    box-shadow: none;
+    transition:
+      background 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .liquid-glass.liquid-glass--fantasma::before {
+    padding: 3px;
+    opacity: 0;
+    transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* :active entra porque no toque não existe hover — sem ele o link do menu
+     mobile não devolveria nada ao dedo. */
+  .liquid-glass.liquid-glass--fantasma:hover,
+  .liquid-glass.liquid-glass--fantasma:focus-visible,
+  .liquid-glass.liquid-glass--fantasma:active {
+    --vidro-filtro: brightness(1.04);
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.42) 0%,
+      rgb(255 255 255 / 0.14) 52%,
+      rgb(255 255 255 / 0.3) 100%
+    );
+    box-shadow:
+      inset 0 1px 1px rgb(255 255 255 / 0.9),
+      inset 0 -1px 1px rgb(255 255 255 / 0.5),
+      inset 0 0 10px rgb(255 255 255 / 0.24),
+      inset 0 -10px 16px -14px rgb(31 45 35 / 0.45),
+      0 1px 2px rgb(31 45 35 / 0.12);
+  }
+
+  .liquid-glass.liquid-glass--fantasma:hover::before,
+  .liquid-glass.liquid-glass--fantasma:focus-visible::before,
+  .liquid-glass.liquid-glass--fantasma:active::before {
+    opacity: 1;
+  }
+
+  /* O filtro vai por variável de propósito. Em repouso tem que ser `none` de
+     verdade: filtro dentro de filtro deixa um degrau na borda, e mesmo uma
+     identidade como brightness(1) desenharia a pílula com o mouse longe. E
+     `none` escrito à mão o Lightning CSS descarta — dentro de var(), não. */
+  @supports (backdrop-filter: url("#liquid-glass-refraction")) {
+    .liquid-glass.liquid-glass--fantasma {
+      backdrop-filter: var(--vidro-filtro, none);
+    }
+
+    .liquid-glass.liquid-glass--fantasma::before {
+      backdrop-filter: var(--vidro-filtro-aro, none);
+    }
+  }
+
   .liquid-glass--compacto.liquid-glass--press:hover {
     transform: scale(1.03);
     box-shadow:
@@ -288,7 +344,9 @@
   @media (prefers-reduced-motion: reduce) {
     .liquid-glass,
     .liquid-glass::before,
-    .liquid-glass--press:hover {
+    .liquid-glass--press:hover,
+    .liquid-glass.liquid-glass--fantasma,
+    .liquid-glass.liquid-glass--fantasma::before {
       transition: none;
       transform: none;
     }

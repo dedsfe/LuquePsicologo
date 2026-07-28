@@ -5,6 +5,11 @@ import { useState } from "react";
 import { BOTAO_VIDRO_BARRA } from "@/lib/botoes";
 import { AGENDAR_URL } from "@/lib/whatsapp";
 
+// Navegar não é o CTA: o link só ganha o vidro debaixo do ponteiro, e some de
+// novo ao sair. Forma e padding ficam com cada uso, como no botão.
+const LINK_BARRA =
+  "liquid-glass liquid-glass--fantasma text-[#25302a]/75 transition-colors hover:text-[#25302a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25302a]/60 motion-reduce:transition-none"
+
 // Destinos provisórios — as seções ainda não existem.
 const LINKS = [
   { label: "Sobre", href: "#sobre" },
@@ -34,9 +39,9 @@ export function Navbar() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="inline-flex rounded-full px-4 py-2 text-sm text-[#25302a]/75 transition hover:bg-white/35 hover:text-[#25302a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25302a]/60 motion-reduce:transition-none"
+                  className={`${LINK_BARRA} inline-flex rounded-full px-4 py-2 text-sm`}
                 >
-                  {link.label}
+                  <span className="relative">{link.label}</span>
                 </a>
               </li>
             ))}
@@ -85,9 +90,9 @@ export function Navbar() {
                   <a
                     href={link.href}
                     onClick={() => setAberto(false)}
-                    className="block rounded-2xl px-4 py-3 text-[15px] text-[#25302a]/80 transition hover:bg-white/35 hover:text-[#25302a] motion-reduce:transition-none"
+                    className={`${LINK_BARRA} block rounded-2xl px-4 py-3 text-[15px]`}
                   >
-                    {link.label}
+                    <span className="relative">{link.label}</span>
                   </a>
                 </li>
               ))}
