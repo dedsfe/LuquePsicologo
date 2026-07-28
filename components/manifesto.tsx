@@ -61,10 +61,12 @@ export function Manifesto() {
               className={CLASSE_LINHA}
               initial={{ filter: "blur(9px)", opacity: 0.4, y: 14 }}
               whileInView={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-              // Dispara cedo, ainda embaixo, pra o foco chegar durante a descida.
+              // Dispara antes de a linha entrar na tela (margem positiva) e leva
+              // pouco mais de um segundo: no celular ela precisa estar legível
+              // ainda na metade de baixo, senão só dá pra ler puxando pro topo.
               // Uma vez só: o que ganhou contorno não volta a embaçar.
-              viewport={{ once: true, amount: 0.2, margin: "0px 0px -15% 0px" }}
-              transition={{ duration: 2.4, ease: [0.33, 0, 0.15, 1] }}
+              viewport={{ once: true, amount: 0, margin: "0px 0px 15% 0px" }}
+              transition={{ duration: 0.8, ease: [0.33, 0, 0.15, 1] }}
             >
               {conteudo}
             </motion.p>

@@ -76,7 +76,9 @@ export function Duvidas() {
   const entrada = {
     initial: { opacity: 0, y: 14, filter: "blur(7px)" },
     whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
-    viewport: { once: true, amount: 0.6 },
+    // 60% do bloco visível era tarde demais no celular: o texto só saía do
+    // desfoque com ele já quase no topo. 15% basta pra não disparar cedo à toa.
+    viewport: { once: true, amount: 0.15, margin: "0px 0px 10% 0px" },
   } as const;
 
   return (

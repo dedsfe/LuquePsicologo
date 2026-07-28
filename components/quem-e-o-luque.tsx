@@ -94,7 +94,8 @@ export function QuemEOLuque() {
   const entradaPergunta = useEntrada(scrollYProgress, 0.38, 0.46);
   const entradaNome = useEntrada(scrollYProgress, 0.44, 0.54);
   const entradaFala = useEntrada(scrollYProgress, 0.7, 0.8);
-  const entradaBotao = useEntrada(scrollYProgress, 0.84, 0.94);
+  // Termina quase no fim da trilha: o que sobrar depois disso é rolagem parada.
+  const entradaBotao = useEntrada(scrollYProgress, 0.86, 0.97);
 
   // Cada papel tem sua fatia: eles chegam um atrás do outro, como fala.
   const passoPapel = 0.025;
@@ -152,8 +153,11 @@ export function QuemEOLuque() {
 
   return (
     <section id="quem-e-o-luque" className="bg-[#f4f2ec]">
-      {/* A trilha dá o curso do scroll; o quadro fica preso no meio dela. */}
-      <div ref={referenciaTrilha} className="relative h-[340vh]">
+      {/* A trilha dá o curso do scroll; o quadro fica preso no meio dela.
+          340vh davam mais de duas telas de rolagem depois que a última palavra
+          já tinha chegado: a tela ficava parada e parecia que a seção não
+          acabava. 220vh é o que a sequência de fato usa. */}
+      <div ref={referenciaTrilha} className="relative h-[220vh]">
         <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
           <motion.div
             style={{ clipPath: recorte }}

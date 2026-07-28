@@ -36,7 +36,9 @@ const CLASSE_RESPOSTA =
 const ENTRADA = {
   initial: { filter: "blur(7px)", opacity: 0, y: 12 },
   whileInView: { filter: "blur(0px)", opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.4, margin: "0px 0px -12% 0px" },
+  // Margem positiva: o foco começa antes de o bloco entrar, pra ele já estar
+  // legível na metade de baixo da tela do celular.
+  viewport: { once: true, amount: 0.15, margin: "0px 0px 12% 0px" },
 } as const;
 
 export function Conversa() {
