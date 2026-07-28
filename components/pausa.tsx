@@ -31,7 +31,7 @@ export function Pausa() {
         {/* Panorâmica recortada em coluna: o corte fecha na figura à mesa. */}
         <div className="relative min-h-[240px] md:min-h-[440px]">
           <Image
-            src="/mesa-campo.png"
+            src="/mesa-campo.webp"
             alt="Homem sentado a uma mesa no meio de um campo ao amanhecer, olhando para o celular."
             fill
             quality={100}

@@ -6,7 +6,7 @@ export function Header() {
   return (
     <header className="relative isolate flex min-h-[100svh] flex-col overflow-hidden">
       <Image
-        src="/header-bg-mobile.png"
+        src="/header-bg-mobile.webp"
         alt=""
         fill
         priority
@@ -15,7 +15,7 @@ export function Header() {
         className="-z-10 object-cover object-bottom md:hidden"
       />
       <Image
-        src="/header-bg.png"
+        src="/header-bg.webp"
         alt=""
         fill
         priority
