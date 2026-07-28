@@ -17,12 +17,15 @@ import { CONVERSAR_URL } from "@/lib/whatsapp";
 const PERGUNTA = "E quem vai estar do outro lado?";
 const NOME = "Luque Gonçalves";
 
+// O CFP exige o registro em material de divulgação. Aparece aqui e no rodapé.
+const CRP = "CRP 139094";
+
 // Os papéis vêm do André: o cara tem repertório clínico e é pai, avô, pastor e
 // músico. É essa soma que faz alguém confiar o próprio pânico a ele.
 const PAPEIS = ["psicanalista", "pai", "avô", "pastor", "músico"];
 
-// TODO (André): copy provisória. Formação, registro no conselho e tempo de
-// clínica não estão aqui porque eu não invento dado do Luque.
+// TODO (André): copy provisória. Formação e tempo de clínica não estão aqui
+// porque eu não invento dado do Luque.
 const FALA =
   "O que eu estudei está a serviço da conversa, não do diagnóstico. Você não vai falar com um especialista distante — vai falar comigo.";
 
@@ -117,7 +120,10 @@ export function QuemEOLuque() {
             />
           </div>
 
-          <p className="mt-6 text-[15px] font-medium text-[#25302a]">{NOME}</p>
+          <p className="mt-6 text-[15px] font-medium text-[#25302a]">
+            {NOME}
+            <span className="ml-2 font-normal text-[#25302a]/50">{CRP}</span>
+          </p>
 
           <p className="mt-6 font-serif text-[30px] italic leading-[1.15] text-[#25302a] sm:text-[44px]">
             {PAPEIS.join(" · ")}
@@ -199,6 +205,14 @@ export function QuemEOLuque() {
                     />
                   ))}
                 </ul>
+
+                {/* O registro entra miúdo: é exigência do CFP, não argumento. */}
+                <motion.p
+                  style={entradaNome}
+                  className="mt-4 text-[13px] tracking-wide text-[#fdfcf9]/45"
+                >
+                  {CRP}
+                </motion.p>
 
                 <motion.p
                   style={entradaFala}

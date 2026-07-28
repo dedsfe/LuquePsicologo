@@ -8,6 +8,9 @@ import { CONVERSAR_URL } from "@/lib/whatsapp";
 // TODO (André): número do registro e e-mail entram aqui quando existirem —
 // nada de registro inventado no ar.
 const NOME = "Luque Gonçalves";
+
+// O CFP exige o registro em material de divulgação — o rodapé é o lugar padrão.
+const CRP = "CRP 139094";
 const ASSINATURA = "psicanalista · atendimento online";
 
 const ATALHOS = [
@@ -137,7 +140,7 @@ export function Rodape() {
           </p>
           <p className="text-[12px] text-[#fdfcf9]/35 sm:text-right">
             {ASSINATURA}
-            <br />© {new Date().getFullYear()} {NOME}
+            <br />© {new Date().getFullYear()} {NOME} · {CRP}
           </p>
         </div>
       </div>

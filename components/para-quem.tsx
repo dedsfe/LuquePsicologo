@@ -14,8 +14,12 @@ import {
 import { BOTAO_VIDRO } from "@/lib/botoes";
 import { CONVERSAR_URL } from "@/lib/whatsapp";
 
-// Copy provisória. A cena é ilustrativa — não é print de conversa real, e por
-// isso a abertura diz "começaria". Sem diagnóstico e sem promessa (CFP).
+// A cena é ilustrativa — não é print de conversa real, e por isso a abertura
+// diz "começaria". Sem diagnóstico e sem promessa (CFP).
+//
+// Nenhuma fala nomeia um quadro: o que a pessoa descreve (cabeça a mil, cansaço
+// que não passa, o que dava prazer ficando sem graça) cabe em ansiedade,
+// depressão ou esgotamento. Quem se reconhece decide o nome depois.
 const ABERTURA_ANTES = "Se fosse hoje, a conversa ";
 const ABERTURA_CHAVE = "começaria mais ou menos assim";
 
@@ -26,30 +30,29 @@ const CONVERSA: Bloco[] = [
     de: "pessoa",
     falas: [
       "Oi. Não sei bem como começar isso.",
-      "Semana passada eu passei mal no meio do mercado. Do nada.",
-      "O coração disparou, faltou ar, achei que ia morrer ali no corredor.",
-      "Fui pro pronto-socorro. Fizeram exame, deu tudo normal, me mandaram pra casa.",
+      "Não aconteceu nada de grave. Acho que é isso que me deixa confuso.",
+      "Só que faz meses que eu acordo cansado e vou dormir com a cabeça a mil.",
     ],
   },
   {
     de: "luque",
     falas: [
       "Que bom que você escreveu.",
-      "O que você sentiu foi real. O corpo não inventa — ele estava respondendo a outra coisa, e é isso que a gente vai olhar junto.",
+      "Não precisa de um motivo grande. O que pesa também é o que a gente vem carregando calado há muito tempo.",
     ],
   },
   {
     de: "pessoa",
     falas: [
-      "Desde aquele dia eu evito sair.",
-      "Cancelei três coisas esse mês. Já nem sei que desculpa dar.",
-      "E todo mundo fica dizendo que é frescura, que é só me distrair.",
+      "Por fora eu dou conta de tudo. Ninguém desconfia.",
+      "Mas as coisas que eu gostava foram ficando sem graça.",
+      "E quando eu falo, escuto que é só me distrair, que todo mundo tá assim.",
     ],
   },
   {
     de: "luque",
     falas: [
-      "Não é frescura. É um quadro conhecido, e ninguém atravessa isso sozinho no braço.",
+      "Não é frescura, e não é só você. Só que isso não se atravessa no braço.",
       "E você não precisa cruzar a cidade pra começar: a conversa é online, de onde você estiver.",
     ],
   },
