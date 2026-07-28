@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { BOTAO_VIDRO, LINK_SUBLINHADO } from "@/lib/botoes";
 import { AGENDAR_URL, CONVERSAR_URL } from "@/lib/whatsapp";
 
 export function Header() {
@@ -36,17 +37,11 @@ export function Header() {
         </p>
 
         <div className="mt-10 flex flex-col items-center gap-5 md:flex-row md:gap-8">
-          <a
-            href={AGENDAR_URL}
-            className="liquid-glass inline-flex items-center justify-center rounded-full px-10 py-4 text-[15px] font-medium tracking-tight text-[#25302a] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#25302a]/60"
-          >
+          <a href={AGENDAR_URL} className={BOTAO_VIDRO}>
             <span className="relative">Agendar consulta</span>
           </a>
 
-          <a
-            href={CONVERSAR_URL}
-            className="text-sm text-[#2f3a32]/65 underline decoration-[#2f3a32]/25 underline-offset-4 transition hover:text-[#2f3a32] hover:decoration-[#2f3a32]/60 motion-reduce:transition-none"
-          >
+          <a href={CONVERSAR_URL} className={LINK_SUBLINHADO}>
             Tirar uma dúvida antes
           </a>
         </div>
