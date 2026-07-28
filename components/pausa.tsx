@@ -19,7 +19,7 @@ const OLHO = "sobre o ritmo";
 const TITULO_ANTES = "Parar não é atraso. É ";
 const TITULO_CHAVE = "parte do caminho";
 const TEXTO =
-  "Tem coisa que só aparece quando a gente desacelera o suficiente pra escutar. A terapia abre esse intervalo uma vez por semana — e o que surge nele costuma surpreender.";
+  "Tem coisa que só aparece quando a gente desacelera o suficiente pra escutar. A terapia abre esse intervalo uma vez por semana, e o que surge nele costuma surpreender.";
 
 // Só o que já está afirmado no site. Duração e preço seguem em aberto —
 // não inventar número aqui (ver DESIGN.md).

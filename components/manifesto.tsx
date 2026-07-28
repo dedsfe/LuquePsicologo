@@ -2,16 +2,30 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-// Copy provisória — a ideia é a frase ganhar contorno junto com o desfoque.
+// Copy provisória. Cada linha diz uma coisa concreta que acontece na terapia,
+// na ordem em que acontece: chegar sem saber falar, falar como dá, entender,
+// escolher. Sem metáfora: quem procura ajuda não tem paciência pra decifrar.
 const LINHAS = [
-  { antes: "No começo, quase nada tem ", chave: "contorno", depois: "." },
   {
-    antes: "A gente descreve o que sente com as ",
-    chave: "palavras que tem",
+    antes: "Você chega sem saber ",
+    chave: "explicar o que sente",
     depois: ".",
   },
-  { antes: "Aos poucos, o que era ruído vira ", chave: "frase", depois: "." },
-  { antes: "E o que era frase vira ", chave: "escolha", depois: "." },
+  {
+    antes: "Tudo bem. Fala como dá: cansaço, medo, uma ",
+    chave: "angústia sem nome",
+    depois: ".",
+  },
+  {
+    antes: "Semana após semana, aquilo começa a ",
+    chave: "fazer sentido",
+    depois: ".",
+  },
+  {
+    antes: "E quando faz sentido, dá pra ",
+    chave: "decidir o que fazer",
+    depois: ".",
+  },
 ];
 
 const CLASSE_LINHA =

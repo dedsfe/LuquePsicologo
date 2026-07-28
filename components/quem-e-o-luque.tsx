@@ -27,7 +27,7 @@ const PAPEIS = ["psicólogo", "pai", "avô", "pastor", "músico"];
 // TODO (André): copy provisória. Formação e tempo de clínica não estão aqui
 // porque eu não invento dado do Luque.
 const FALA =
-  "O que eu estudei está a serviço da conversa, não do diagnóstico. Você não vai falar com um especialista distante — vai falar comigo.";
+  "O que eu estudei está a serviço da conversa, não do diagnóstico. Você não vai falar com um especialista distante. Vai falar comigo.";
 
 const ALT =
   "Luque Gonçalves sentado à mesa de um estúdio, falando ao microfone durante a gravação de um podcast.";

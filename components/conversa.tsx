@@ -7,7 +7,7 @@ const PARES = [
   {
     pergunta: "E se eu não souber o que falar?",
     resposta:
-      "A maioria não sabe. A gente começa por aí mesmo — pelo que ainda não tem nome.",
+      "A maioria não sabe. A gente começa por aí mesmo, pelo que ainda não tem nome.",
   },
   {
     pergunta: "Preciso estar muito mal pra procurar?",

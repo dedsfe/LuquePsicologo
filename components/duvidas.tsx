@@ -31,7 +31,7 @@ const DUVIDAS = [
   {
     pergunta: "E se eu travar no meio da conversa?",
     resposta:
-      "A gente para. O silêncio também é parte da sessão — ninguém vai te empurrar a falar o que você ainda não consegue.",
+      "A gente para. O silêncio também é parte da sessão. Ninguém vai te empurrar a falar o que você ainda não consegue.",
   },
   {
     pergunta: "Preciso de diagnóstico ou encaminhamento?",
