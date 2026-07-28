@@ -22,7 +22,7 @@ const CRP = "CRP 139094";
 
 // Os papéis vêm do André: o cara tem repertório clínico e é pai, avô, pastor e
 // músico. É essa soma que faz alguém confiar o próprio pânico a ele.
-const PAPEIS = ["psicanalista", "pai", "avô", "pastor", "músico"];
+const PAPEIS = ["psicólogo", "pai", "avô", "pastor", "músico"];
 
 // TODO (André): copy provisória. Formação e tempo de clínica não estão aqui
 // porque eu não invento dado do Luque.
@@ -76,12 +76,15 @@ export function QuemEOLuque() {
 
   // A foto cresce do centro até ocupar a tela — clip-path em vez de escala,
   // pra imagem não distorcer nem perder nitidez no caminho.
+  // A janela nasce sobre o rosto, não no meio da tela: ele fica no terço
+  // superior da foto, então topo e base abrem de alturas diferentes.
   const recorte = useTransform(scrollYProgress, (v) => {
     const abertura = Math.min(1, v / 0.34);
-    const vertical = 24 * (1 - abertura);
+    const topo = 14 * (1 - abertura);
+    const base = 36 * (1 - abertura);
     const horizontal = 28 * (1 - abertura);
     const raio = 24 * (1 - abertura);
-    return `inset(${vertical}% ${horizontal}% ${vertical}% ${horizontal}% round ${raio}px)`;
+    return `inset(${topo}% ${horizontal}% ${base}% ${horizontal}% round ${raio}px)`;
   });
 
   // O véu só escurece depois que a foto já tomou a tela: é o que deixa a fala
@@ -111,7 +114,7 @@ export function QuemEOLuque() {
 
           <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-[24px] bg-[#e8e4da]">
             <Image
-              src="/luque-podcast.webp"
+              src="/luque-podcast-v2.webp"
               alt={ALT}
               fill
               quality={100}
@@ -157,7 +160,7 @@ export function QuemEOLuque() {
             className="relative h-full w-full"
           >
             <Image
-              src="/luque-podcast.webp"
+              src="/luque-podcast-v2.webp"
               alt={ALT}
               fill
               priority={false}
