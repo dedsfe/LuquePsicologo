@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { BOTAO_VIDRO_BARRA } from "@/lib/botoes";
 import { AGENDAR_URL } from "@/lib/whatsapp";
 
 // Destinos provisórios — as seções ainda não existem.
@@ -43,9 +44,9 @@ export function Navbar() {
 
           <a
             href={AGENDAR_URL}
-            className="relative hidden rounded-full bg-white/45 px-5 py-2.5 text-sm font-medium tracking-tight text-[#25302a] shadow-[inset_0_1px_0_0_rgb(255_255_255/0.9),0_1px_2px_rgb(31_45_35/0.12)] transition hover:bg-white/65 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25302a]/60 motion-reduce:transition-none md:inline-flex"
+            className={`${BOTAO_VIDRO_BARRA} hidden rounded-full px-5 py-2.5 text-sm md:inline-flex`}
           >
-            Agendar
+            <span className="relative">Agendar</span>
           </a>
 
           <button
@@ -53,7 +54,7 @@ export function Navbar() {
             onClick={() => setAberto((v) => !v)}
             aria-expanded={aberto}
             aria-controls="menu-mobile"
-            className="relative inline-flex size-10 items-center justify-center rounded-full bg-white/40 text-[#25302a] transition hover:bg-white/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25302a]/60 motion-reduce:transition-none md:hidden"
+            className={`${BOTAO_VIDRO_BARRA} inline-flex size-10 rounded-full md:hidden`}
           >
             <span className="sr-only">
               {aberto ? "Fechar menu" : "Abrir menu"}
@@ -94,9 +95,9 @@ export function Navbar() {
                 <a
                   href={AGENDAR_URL}
                   onClick={() => setAberto(false)}
-                  className="block rounded-2xl bg-white/50 px-4 py-3 text-center text-[15px] font-medium text-[#25302a] shadow-[inset_0_1px_0_0_rgb(255_255_255/0.9)] transition hover:bg-white/70 motion-reduce:transition-none"
+                  className={`${BOTAO_VIDRO_BARRA} flex w-full rounded-2xl px-4 py-3 text-[15px]`}
                 >
-                  Agendar consulta
+                  <span className="relative">Agendar consulta</span>
                 </a>
               </li>
             </ul>
