@@ -192,8 +192,15 @@
   }
 
   /* Refração de verdade onde o browser aceita filtro SVG no backdrop.
-     Sem suporte, fica só o blur acima — que já é o visual base. */
-  @supports (backdrop-filter: url("#liquid-glass-refraction")) {
+     Sem suporte, fica só o blur acima — que já é o visual base.
+
+     O `not (-webkit-appearance: -apple-pay-button)` tira o WebKit da jogada:
+     o Safari *parseia* `backdrop-filter: url(...)` sem reclamar — e o Lightning
+     CSS ainda duplica a condição em `-webkit-backdrop-filter` —, então o
+     @supports dava true no iPhone, entrava aqui e trocava o blur bom por um
+     filtro SVG que o Safari não renderiza. Resultado: vidro nenhum. */
+  @supports (backdrop-filter: url("#liquid-glass-refraction")) and
+    (not (-webkit-appearance: -apple-pay-button)) {
     .liquid-glass {
       backdrop-filter: url("#liquid-glass-refraction") blur(4px) saturate(180%);
     }
@@ -238,16 +245,18 @@
     padding: 3px;
   }
 
-  /* Precisa repetir a condição do bloco acima: fora de um @supports que cite a
-     propriedade, o Lightning CSS emite só o `-webkit-` e a refração volta. */
-  @supports (backdrop-filter: url("#liquid-glass-refraction")) {
-    .liquid-glass.liquid-glass--compacto {
-      backdrop-filter: brightness(1.03);
-    }
+  /* Vale em todo browser, não só onde a refração entra: sem isto o Safari — que
+     fica de fora do @supports acima — herdaria o blur(6px) da base e leitearia
+     o botão. Os dois prefixos vão escritos à mão porque fora de um @supports
+     que cite a propriedade o Lightning CSS emite só o `-webkit-`. */
+  .liquid-glass.liquid-glass--compacto {
+    -webkit-backdrop-filter: brightness(1.03);
+    backdrop-filter: brightness(1.03);
+  }
 
-    .liquid-glass.liquid-glass--compacto::before {
-      backdrop-filter: brightness(1.06);
-    }
+  .liquid-glass.liquid-glass--compacto::before {
+    -webkit-backdrop-filter: brightness(1.06);
+    backdrop-filter: brightness(1.06);
   }
 
   /* Link da barra: o mesmo material, mas só quando o ponteiro chega. Em repouso
@@ -296,14 +305,14 @@
      verdade: filtro dentro de filtro deixa um degrau na borda, e mesmo uma
      identidade como brightness(1) desenharia a pílula com o mouse longe. E
      `none` escrito à mão o Lightning CSS descarta — dentro de var(), não. */
-  @supports (backdrop-filter: url("#liquid-glass-refraction")) {
-    .liquid-glass.liquid-glass--fantasma {
-      backdrop-filter: var(--vidro-filtro, none);
-    }
+  .liquid-glass.liquid-glass--fantasma {
+    -webkit-backdrop-filter: var(--vidro-filtro, none);
+    backdrop-filter: var(--vidro-filtro, none);
+  }
 
-    .liquid-glass.liquid-glass--fantasma::before {
-      backdrop-filter: var(--vidro-filtro-aro, none);
-    }
+  .liquid-glass.liquid-glass--fantasma::before {
+    -webkit-backdrop-filter: var(--vidro-filtro-aro, none);
+    backdrop-filter: var(--vidro-filtro-aro, none);
   }
 
   .liquid-glass--compacto.liquid-glass--press:hover {
