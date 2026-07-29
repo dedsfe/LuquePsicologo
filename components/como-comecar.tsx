@@ -148,7 +148,7 @@ export function ComoComecar() {
   } as const;
 
   return (
-    <section id="como-comecar" className="bg-[#fdfcf9] px-6 py-[18vh] sm:px-10">
+    <section id="como-comecar" className="bg-[#fdfcf9] px-6 py-[10vh] sm:px-10">
       <div className="mx-auto max-w-5xl">
         {reduzirMovimento ? (
           <>
@@ -165,14 +165,14 @@ export function ComoComecar() {
           <>
             <motion.p
               {...cabecalho}
-              transition={{ duration: 1.3, ease: CALMA }}
+              transition={{ duration: 0.9, ease: CALMA }}
               className="font-serif text-lg italic text-[#25302a]/45 sm:text-xl"
             >
               {OLHO}
             </motion.p>
             <motion.h2
               {...cabecalho}
-              transition={{ duration: 1.5, delay: 0.28, ease: CALMA }}
+              transition={{ duration: 1, delay: 0.14, ease: CALMA }}
               className="mt-5 max-w-2xl text-[30px] leading-[1.15] tracking-tight text-[#25302a] sm:text-[46px]"
             >
               {TITULO_ANTES}
@@ -182,7 +182,7 @@ export function ComoComecar() {
           </>
         )}
 
-        <div ref={trilha} className="relative mt-[13vh]">
+        <div ref={trilha} className="relative mt-[7vh]">
           {/* O fio liga os três passos. É decoração: a ordem já está no <ol>. */}
           {!reduzirMovimento && medida.altura > 0 && (
             <svg
@@ -246,7 +246,11 @@ export function ComoComecar() {
             </svg>
           )}
 
-          <ol className="flex flex-col gap-[16vh] pl-16 sm:pl-24">
+          {/* Os passos vinham a 16vh um do outro: no celular isso é uma tela
+              inteira de nada entre uma etapa e a seguinte, e o fio some de
+              vista antes de chegar no próximo nó. A 8vh a sequência continua
+              respirando, mas o olho nunca perde a linha. */}
+          <ol className="flex flex-col gap-[5vh] pl-16 sm:pl-24">
             {PASSOS.map((passo, indice) => (
               <Passo
                 key={passo.numero}
@@ -372,17 +376,20 @@ function Passo({
 
         <motion.h3
           {...entrada}
-          transition={{ duration: 1.1, delay: 0.1, ease: CALMA }}
-          className="mt-4 text-[26px] leading-[1.15] tracking-tight text-[#25302a] sm:text-[34px]"
+          transition={{ duration: 0.8, delay: 0.06, ease: CALMA }}
+          className="mt-3 text-[23px] leading-[1.12] tracking-tight text-[#25302a] sm:text-[34px]"
         >
           {passo.antes}
           <em className="font-serif italic">{passo.chave}</em>
           {passo.depois}
         </motion.h3>
 
+        {/* Com os passos mais juntos, um atraso de 0,34s deixava o texto
+            chegando depois que o olho já tinha descido. O escalonamento
+            continua (título, depois corpo), só que dentro de um respiro. */}
         <motion.p
           {...entrada}
-          transition={{ duration: 1.2, delay: 0.34, ease: CALMA }}
+          transition={{ duration: 0.85, delay: 0.16, ease: CALMA }}
           className="mt-4 max-w-md text-[17px] leading-[1.5] text-[#25302a]/65 sm:text-[19px]"
         >
           {passo.texto}
@@ -422,7 +429,7 @@ function Cena({
 /** Moldura das cenas: papel um tom acima do fundo, canto grande, sombra rasa. */
 function Quadro({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full max-w-sm rounded-[26px] bg-[#f4f2ec] p-6 shadow-[0_1px_2px_rgb(37_48_42/0.04),0_18px_40px_-24px_rgb(37_48_42/0.28)] sm:p-7">
+    <div className="w-full max-w-sm rounded-[26px] bg-[#f4f2ec] p-5 shadow-[0_1px_2px_rgb(37_48_42/0.04),0_18px_40px_-24px_rgb(37_48_42/0.28)] sm:p-7">
       {children}
     </div>
   );
@@ -458,7 +465,7 @@ function CenaMensagem({
 
   return (
     <Quadro>
-      <div className="flex min-h-[188px] flex-col justify-end gap-3">
+      <div className="flex min-h-[118px] flex-col justify-end gap-3">
         <div className="flex justify-end">
           <p className="max-w-[85%] rounded-[20px] bg-[#25302a] px-[18px] py-3 text-right text-[15px] leading-relaxed text-[#fdfcf9]">
             {texto || " "}
@@ -529,7 +536,7 @@ function CenaHorario({
 
   return (
     <Quadro>
-      <div className="flex min-h-[188px] flex-col justify-center gap-[10px]">
+      <div className="flex min-h-[118px] flex-col justify-center gap-[10px]">
         <p className="mb-1 text-[11px] tracking-wide text-[#25302a]/35">
           esta semana
         </p>
@@ -595,7 +602,7 @@ function CenaEncontro({
 }) {
   return (
     <Quadro>
-      <div className="relative flex min-h-[188px] items-center justify-center">
+      <div className="relative flex min-h-[118px] items-center justify-center">
         {/* Ondas saindo do centro: é o que dá o pulso da respiração. */}
         {!reduzirMovimento &&
           [0, 1, 2].map((anel) => (
@@ -641,7 +648,7 @@ function CenaEncontro({
 /** O convite final: uma frase e um botão que vem ao encontro do cursor. */
 function Fecho({ reduzirMovimento }: { reduzirMovimento: boolean | null }) {
   return (
-    <div className="mt-[18vh] flex flex-col items-center text-center">
+    <div className="mt-[10vh] flex flex-col items-center text-center">
       <motion.p
         initial={
           reduzirMovimento ? false : { opacity: 0, filter: "blur(7px)", y: 12 }
