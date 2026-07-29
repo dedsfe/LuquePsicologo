@@ -81,11 +81,17 @@ function desenharFio(altura: number) {
 export function ComoComecar() {
   const reduzirMovimento = useReducedMotion();
   const trilha = useRef<HTMLDivElement>(null);
+  const curso = useRef<HTMLDivElement>(null);
   const marcos = useRef<Array<HTMLSpanElement | null>>([]);
 
   // A altura da trilha e o centro de cada número, medidos no DOM: a linha
-  // precisa acompanhar o texto real, não uma altura chutada.
-  const [medida, setMedida] = useState({ altura: 0, nos: [] as number[] });
+  // precisa acompanhar o texto real, não uma altura chutada. `tela` entra
+  // junto porque o curso do pin é calculado a partir dela.
+  const [medida, setMedida] = useState({
+    altura: 0,
+    nos: [] as number[],
+    tela: 0,
+  });
 
   useEffect(() => {
     const alvo = trilha.current;
@@ -98,7 +104,11 @@ export function ComoComecar() {
         const caixa = marco.getBoundingClientRect();
         return caixa.top - base + caixa.height / 2;
       });
-      setMedida({ altura: alvo.offsetHeight, nos });
+      setMedida({
+        altura: alvo.offsetHeight,
+        nos,
+        tela: window.innerHeight,
+      });
     };
 
     medir();
@@ -111,10 +121,12 @@ export function ComoComecar() {
     };
   }, []);
 
-  // O fio se desenha com o scroll; a mola tira o serrilhado do trackpad.
+  // A seção agora prende: quem dá o curso é a trilha externa, e o conteúdo
+  // desliza dentro do painel. Por isso o progresso é medido no curso, do
+  // momento em que ele encosta no topo até o momento em que termina de passar.
   const { scrollYProgress } = useScroll({
-    target: trilha,
-    offset: ["start 80%", "end 65%"],
+    target: curso,
+    offset: ["start start", "end end"],
   });
   const avanco = useSpring(scrollYProgress, {
     stiffness: 120,
@@ -123,6 +135,17 @@ export function ComoComecar() {
   });
 
   const caminho = useMemo(() => desenharFio(medida.altura), [medida.altura]);
+
+  // O quanto o conteúdo precisa correr para passar inteiro pelo painel, e o
+  // curso que a página gasta nisso. O fator 0,7 é o ganho: o conteúdo anda um
+  // pouco mais rápido que o dedo, então a mesma sequência cabe em menos página
+  // sem virar corrida. Uma folga de 12vh evita cortar a última linha.
+  const deslizeTotal = Math.max(
+    0,
+    medida.altura - medida.tela + medida.tela * 0.12,
+  );
+  const cursoAltura = medida.tela + deslizeTotal * 0.7;
+  const deslize = useTransform(avanco, [0, 1], [0, -deslizeTotal]);
 
   // O passo "aceso" é aquele que a ponta do fio já alcançou — o texto acende
   // junto, então quem lê sabe onde está sem precisar de barra de progresso.
@@ -182,89 +205,131 @@ export function ComoComecar() {
           </>
         )}
 
-        <div ref={trilha} className="relative mt-[7vh]">
-          {/* O fio liga os três passos. É decoração: a ordem já está no <ol>. */}
-          {!reduzirMovimento && medida.altura > 0 && (
-            <svg
-              aria-hidden
-              width={FIO_LARGURA}
-              height={medida.altura}
-              viewBox={`0 0 ${FIO_LARGURA} ${medida.altura}`}
-              className="pointer-events-none absolute left-0 top-0"
+        {/* A seção prende aqui: o curso externo dá a rolagem, o painel fica
+            parado no meio da tela e a sequência corre dentro dele. */}
+        <div
+          ref={curso}
+          className="relative mt-[7vh]"
+          style={reduzirMovimento ? undefined : { height: cursoAltura }}
+        >
+          <div
+            className={
+              reduzirMovimento
+                ? "relative"
+                : // items-start, não center: o conteúdo é mais alto que o
+                  // painel, e centralizado ele já nasceria com o primeiro passo
+                  // cortado acima da tela.
+                  "sticky top-0 flex h-screen items-start overflow-hidden pt-[14vh]"
+            }
+          >
+            <motion.div
+              style={reduzirMovimento ? undefined : { y: deslize }}
+              className="w-full"
             >
-              <defs>
-                <linearGradient id="fio-comeco" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#25302a" stopOpacity="0.1" />
-                  <stop offset="45%" stopColor="#25302a" stopOpacity="0.42" />
-                  <stop offset="100%" stopColor="#25302a" stopOpacity="0.16" />
-                </linearGradient>
-              </defs>
+              <div ref={trilha} className="relative">
+                {/* O fio liga os três passos. É decoração: a ordem já está no <ol>. */}
+                {!reduzirMovimento && medida.altura > 0 && (
+                  <svg
+                    aria-hidden
+                    width={FIO_LARGURA}
+                    height={medida.altura}
+                    viewBox={`0 0 ${FIO_LARGURA} ${medida.altura}`}
+                    className="pointer-events-none absolute left-0 top-0"
+                  >
+                    <defs>
+                      <linearGradient
+                        id="fio-comeco"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0%"
+                          stopColor="#25302a"
+                          stopOpacity="0.1"
+                        />
+                        <stop
+                          offset="45%"
+                          stopColor="#25302a"
+                          stopOpacity="0.42"
+                        />
+                        <stop
+                          offset="100%"
+                          stopColor="#25302a"
+                          stopOpacity="0.16"
+                        />
+                      </linearGradient>
+                    </defs>
 
-              {/* Sulco apagado: mostra que o caminho continua adiante. */}
-              <path
-                d={caminho}
-                fill="none"
-                stroke="#25302a"
-                strokeOpacity="0.08"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
+                    {/* Sulco apagado: mostra que o caminho continua adiante. */}
+                    <path
+                      d={caminho}
+                      fill="none"
+                      stroke="#25302a"
+                      strokeOpacity="0.08"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
 
-              <motion.path
-                d={caminho}
-                fill="none"
-                stroke="url(#fio-comeco)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                style={{ pathLength: avanco }}
-              />
+                    <motion.path
+                      d={caminho}
+                      fill="none"
+                      stroke="url(#fio-comeco)"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      style={{ pathLength: avanco }}
+                    />
 
-              {medida.nos.map((y, indice) => (
-                <NoDoFio
-                  key={indice}
-                  x={xDoFio(y, medida.altura)}
-                  y={y}
-                  aceso={indice <= alcancado}
-                />
-              ))}
+                    {medida.nos.map((y, indice) => (
+                      <NoDoFio
+                        key={indice}
+                        x={xDoFio(y, medida.altura)}
+                        y={y}
+                        aceso={indice <= alcancado}
+                      />
+                    ))}
 
-              <motion.circle
-                cx={pontaX}
-                cy={pontaY}
-                r={9}
-                fill="#25302a"
-                fillOpacity={0.12}
-                style={{ opacity: pontaOpacidade }}
-              />
-              <motion.circle
-                cx={pontaX}
-                cy={pontaY}
-                r={3.5}
-                fill="#25302a"
-                style={{ opacity: pontaOpacidade }}
-              />
-            </svg>
-          )}
+                    <motion.circle
+                      cx={pontaX}
+                      cy={pontaY}
+                      r={9}
+                      fill="#25302a"
+                      fillOpacity={0.12}
+                      style={{ opacity: pontaOpacidade }}
+                    />
+                    <motion.circle
+                      cx={pontaX}
+                      cy={pontaY}
+                      r={3.5}
+                      fill="#25302a"
+                      style={{ opacity: pontaOpacidade }}
+                    />
+                  </svg>
+                )}
 
-          {/* Os passos vinham a 16vh um do outro: no celular isso é uma tela
+                {/* Os passos vinham a 16vh um do outro: no celular isso é uma tela
               inteira de nada entre uma etapa e a seguinte, e o fio some de
               vista antes de chegar no próximo nó. A 8vh a sequência continua
               respirando, mas o olho nunca perde a linha. */}
-          <ol className="flex flex-col gap-[5vh] pl-16 sm:pl-24">
-            {PASSOS.map((passo, indice) => (
-              <Passo
-                key={passo.numero}
-                passo={passo}
-                indice={indice}
-                aceso={reduzirMovimento ? true : indice <= alcancado}
-                reduzirMovimento={reduzirMovimento}
-                progressoDaTrilha={avanco}
-                registrarMarco={(elemento) => {
-                  marcos.current[indice] = elemento;
-                }}
-              />
-            ))}
-          </ol>
+                <ol className="flex flex-col gap-[5vh] pl-16 sm:pl-24">
+                  {PASSOS.map((passo, indice) => (
+                    <Passo
+                      key={passo.numero}
+                      passo={passo}
+                      indice={indice}
+                      aceso={reduzirMovimento ? true : indice <= alcancado}
+                      reduzirMovimento={reduzirMovimento}
+                      progressoDaTrilha={avanco}
+                      registrarMarco={(elemento) => {
+                        marcos.current[indice] = elemento;
+                      }}
+                    />
+                  ))}
+                </ol>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         <Fecho reduzirMovimento={reduzirMovimento} />
@@ -292,7 +357,10 @@ function NoDoFio({ x, y, aceso }: { x: number; y: number; aceso: boolean }) {
         stroke="#25302a"
         strokeWidth="1.5"
         initial={{ scale: 0.72, strokeOpacity: 0.16 }}
-        animate={{ scale: aceso ? 1 : 0.72, strokeOpacity: aceso ? 0.55 : 0.16 }}
+        animate={{
+          scale: aceso ? 1 : 0.72,
+          strokeOpacity: aceso ? 0.55 : 0.16,
+        }}
         transition={{ type: "spring", stiffness: 320, damping: 20 }}
         style={CENTRO_DA_FORMA}
       />
@@ -473,7 +541,11 @@ function CenaMensagem({
               <motion.span
                 aria-hidden
                 animate={{ opacity: [1, 0.15, 1] }}
-                transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="ml-[2px] inline-block h-[15px] w-[2px] translate-y-[2px] bg-[#fdfcf9]"
               />
             )}
@@ -491,7 +563,9 @@ function CenaMensagem({
 
         {/* A resposta chega depois de um respiro — ninguém responde no mesmo segundo. */}
         <motion.p
-          initial={reduzirMovimento ? false : { opacity: 0, scale: 0.86, y: 10 }}
+          initial={
+            reduzirMovimento ? false : { opacity: 0, scale: 0.86, y: 10 }
+          }
           animate={
             completa
               ? { opacity: 1, scale: 1, y: 0 }
