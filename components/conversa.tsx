@@ -2,7 +2,10 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-// Perguntas provisórias — o que costuma travar alguém antes da primeira mensagem.
+// Perguntas provisórias: o que costuma travar alguém antes da primeira mensagem.
+const OLHO = "antes da primeira mensagem";
+const TITULO = "O que costuma travar quem está pensando em começar.";
+
 const PARES = [
   {
     pergunta: "E se eu não souber o que falar?",
@@ -26,69 +29,49 @@ const PARES = [
   },
 ];
 
-// A pergunta é pensamento: serif itálico, miúda, apagada.
-const CLASSE_PERGUNTA = "font-serif text-lg italic text-[#25302a]/45 sm:text-xl";
+const CALMA = [0.33, 0, 0.15, 1] as const;
 
-// A resposta é fala: sans, cheia, escura.
-const CLASSE_RESPOSTA =
-  "text-xl leading-[1.4] tracking-tight text-[#25302a] sm:text-[27px]";
-
-const ENTRADA = {
-  initial: { filter: "blur(7px)", opacity: 0, y: 12 },
-  whileInView: { filter: "blur(0px)", opacity: 1, y: 0 },
-  // Margem positiva: o foco começa antes de o bloco entrar, pra ele já estar
-  // legível na metade de baixo da tela do celular.
-  viewport: { once: true, amount: 0.15, margin: "0px 0px 12% 0px" },
-} as const;
-
+/**
+ * Era um ziguezague: pergunta e resposta soltas no branco, alternando de lado
+ * a cada 13vh. Bonito de rolar, impossível de escanear, e no celular o texto
+ * alinhado à direita ainda quebrava a leitura.
+ *
+ * Agora são cards em grade, todos alinhados à esquerda. A pergunta continua
+ * em serif itálico e a resposta em sans escura: a hierarquia que antes vinha
+ * do espaço agora vem do contraste entre as duas vozes dentro da mesma caixa.
+ */
 export function Conversa() {
   const reduzirMovimento = useReducedMotion();
 
   return (
-    <section id="como-funciona" className="bg-[#faf8f3] px-6 py-[18vh] sm:px-10">
-      <div className="mx-auto flex max-w-4xl flex-col gap-[13vh]">
-        {PARES.map(({ pergunta, resposta }, i) => {
-          // Alterna o eixo: o olho desce em ziguezague, sem precisar de caixa.
-          const aDireita = i % 2 === 1;
+    <section id="como-funciona" className="bg-[#faf8f3] px-6 py-[12vh] sm:px-10">
+      <div className="mx-auto max-w-5xl">
+        <p className="font-serif text-lg italic text-[#25302a]/45 sm:text-xl">
+          {OLHO}
+        </p>
+        <h2 className="mt-4 max-w-2xl text-[26px] leading-[1.2] tracking-tight text-[#25302a] sm:text-[38px]">
+          {TITULO}
+        </h2>
 
-          return (
-            <div
+        <ul className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5">
+          {PARES.map(({ pergunta, resposta }, indice) => (
+            <motion.li
               key={pergunta}
-              className={`flex max-w-xl flex-col gap-4 ${
-                aDireita ? "self-end text-right" : "self-start"
-              }`}
+              initial={reduzirMovimento ? false : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3, margin: "0px 0px 10% 0px" }}
+              transition={{ duration: 0.45, delay: indice * 0.06, ease: CALMA }}
+              className="rounded-2xl border border-[#25302a]/10 bg-[#fdfcf9] p-6 sm:p-7"
             >
-              {reduzirMovimento ? (
-                <>
-                  <p className={CLASSE_PERGUNTA}>{pergunta}</p>
-                  <p className={CLASSE_RESPOSTA}>{resposta}</p>
-                </>
-              ) : (
-                <>
-                  <motion.p
-                    {...ENTRADA}
-                    transition={{ duration: 1.4, ease: [0.33, 0, 0.15, 1] }}
-                    className={CLASSE_PERGUNTA}
-                  >
-                    {pergunta}
-                  </motion.p>
-                  {/* O respiro é o que faz soar como resposta, não como legenda. */}
-                  <motion.p
-                    {...ENTRADA}
-                    transition={{
-                      duration: 1.6,
-                      delay: 0.45,
-                      ease: [0.33, 0, 0.15, 1],
-                    }}
-                    className={CLASSE_RESPOSTA}
-                  >
-                    {resposta}
-                  </motion.p>
-                </>
-              )}
-            </div>
-          );
-        })}
+              <p className="font-serif text-[17px] italic text-[#25302a]/55 sm:text-lg">
+                {pergunta}
+              </p>
+              <p className="mt-3 text-[17px] leading-[1.45] tracking-tight text-[#25302a] sm:text-[19px]">
+                {resposta}
+              </p>
+            </motion.li>
+          ))}
+        </ul>
       </div>
     </section>
   );

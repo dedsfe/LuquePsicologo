@@ -1,76 +1,102 @@
-# Plano v2.0: encurtar o caminho até o WhatsApp
+# Plano v2.0: do site cinematográfico para o site que converte
 
-Fechamos a v1.0 com o site inteiro no ar e funcionando. A v2.0 não muda a
-identidade visual: ela corta rolagem e coloca a informação que decide a
-conversão mais perto do topo.
+A v1.0 está no ar e tagueada (`v1.0`). A v2.0 mudou de objetivo no meio do
+caminho, e é isso que este documento registra.
 
-Medido em 28/07/2026, iPhone 15 (tela de 659px), produção.
+Última atualização: 29/07/2026.
 
-## O diagnóstico
+## A virada de direção
 
-O site tem **17 telas de rolagem no mobile**. As três landing pages de
-psicólogas que rodam Google Ads e que usamos como referência têm de 4 a 6.
+O plano original era só **encurtar a rolagem**. Depois de olhar três landing
+pages de psicólogas que rodam Google Ads (marlabastos.com.br,
+psicologakellytaniguchi.com, nayaraborgespsi.com), o objetivo virou outro:
 
-Dois furos que a medição mostrou:
+> Deixar o site **menos awwwards e mais comum**, porque quem chega de anúncio
+> não processa um site de texto puro com trilha de scroll. O que fica comum é a
+> **estrutura e o ritmo**; a paleta, a tipografia e o vidro continuam.
 
-1. **Da tela 0,6 até a 7,1 não existe nenhum CTA.** Quem chega de anúncio rola
-   seis telas e meia sem ver um botão.
-2. **Falta um bloco dizendo o que o Luque atende** (ansiedade, pânico, luto,
-   depressão). Hoje isso está diluído dentro de `#para-quem`, lá na tela 5.
-   As três referências dizem isso na primeira tela.
+O que as três referências têm e o site não tinha: um bloco dizendo o que o
+psicólogo atende, logo na primeira rolada, e CTA repetido perto.
+O que nenhuma das três tem: preço, formulário, agendamento online, depoimento.
+Todas mandam para o WhatsApp.
 
-## Mapa atual e corte proposto
+## Regras de trabalho
 
-| seção | arquivo | hoje | meta | o que fazer |
-| --- | --- | --- | --- | --- |
-| hero | `header.tsx` | 1,0 | 1,0 | mantém |
-| `#sobre` | `manifesto.tsx` | 1,2 | 0,6 | juntar o espaçamento (`gap-[10vh]`, `py-[22vh]`) |
-| pausa | `pausa.tsx` | 1,3 | 0 | cortar inteira: é atmosfera, não informação |
-| `#como-funciona` | `conversa.tsx` | 1,5 | 1,0 | encurtar respiro entre os pares |
-| `#para-quem` | `para-quem.tsx` | 2,4 | 1,2 | reduzir a trilha de scroll |
-| `#quem-e-o-luque` | `quem-e-o-luque.tsx` | 2,2 | 1,3 | trilha já caiu de 340vh para 220vh; ir a 150vh |
-| `#como-comecar` | `como-comecar.tsx` | 3,5 | 1,5 | maior ganho da página; as 3 cenas ocupam demais |
-| `#perguntas` | `duvidas.tsx` | 1,9 | 1,2 | mantém: as 3 referências têm FAQ |
-| fecho | `fecho.tsx` | 0,8 | 0,8 | mantém |
-| rodapé | `rodape.tsx` | 1,4 | 0,8 | mantém o conteúdo, corta o espaço |
+1. **Não commitar nem dar push sem o André aprovar.** Fazer, mostrar no
+   localhost, parar.
+2. **Nunca rodar `npm run build` com o `npm run dev` no ar**: o build limpa o
+   `.next` e derruba a página que ele está olhando.
+3. Subir o dev desanexado, senão ele morre junto com a tarefa:
+   `(nohup npm run dev > /tmp/dev.log 2>&1 &)`
+4. Medir sempre antes e depois, no viewport de celular:
+   `document.body.scrollHeight / window.innerHeight`
 
-Soma da meta: cerca de **9,4 telas**, mais os dois blocos novos abaixo.
+## Já commitado e no ar
 
-## O que entra de novo
+- `4063915` um CTA só na hero e no fecho, tudo para o WhatsApp
+- `a975b14` manifesto abstrato virou copy concreta; travessões fora das copys
+- `480b45b` desfoques focam antes do meio da tela; fim real da seção do Luque
+- `dd147bb` `#como-comecar` de 3,5 para 2,8 telas
+- `01bdb16` `#como-comecar` pinado (o conteúdo corre dentro do painel)
 
-- **Bloco "o que eu atendo"** logo depois da hero: lista curta de sintomas em
-  linguagem de quem sente, não de diagnóstico. Custo estimado: 0,5 tela.
-- **Um CTA por volta da tela 3**, para fechar o buraco de seis telas.
+Aprendizado do pin: **ele não reduz rolagem**. A rolagem de um pin é a altura
+do curso, e o curso precisa dar tempo do conteúdo passar. Pin muda a leitura,
+não o tamanho. Cortar telas exige cortar conteúdo.
 
-Alvo final: **10 telas**, contra 17 de hoje.
+## Pronto no localhost, esperando aprovação (sem commit)
 
-## Ordem de ataque
+- `components/o-que-atendo.tsx` (novo) + `app/page.tsx`: bloco "o que eu
+  atendo" logo depois da hero, 4 cards em linguagem de sintoma (ansiedade,
+  depressão, luto, fases difíceis). **TODO: confirmar a lista com o Luque.**
+- `components/manifesto.tsx` (`#sobre`): as 4 frases soltas viraram 4 etapas
+  numeradas ligadas por uma linha. 1,18 para 0,82 tela.
+- `components/conversa.tsx` (`#como-funciona`): o ziguezague virou grade de
+  cards com cabeçalho.
 
-1. `#como-comecar` (3,5 telas, o maior ganho isolado)
-2. Cortar `pausa.tsx`
-3. `#para-quem` e `#quem-e-o-luque`
-4. Bloco de sintomas + CTA do meio
-5. Espaçamentos de `#sobre`, `#como-funciona` e rodapé
+## O problema aberto: ficou tudo igual
 
-Cada passo entra num commit separado, com a rolagem medida antes e depois.
+`#o-que-atendo` e `#como-funciona` saíram com a mesma receita (olho em itálico,
+título, grade de cards com borda). Trocamos "tudo etéreo" por "tudo igual".
 
-## Fora de escopo aqui
+**Próximo passo, decidido mas não executado:**
 
-Estes itens estão em aberto e não fazem parte da v2.0:
+1. **Fundir `#como-funciona` com `#perguntas`** numa seção só, em accordion
+   clicável. As duas fazem a mesma coisa: pergunta e resposta sobre o mesmo
+   medo. Essa é a repetição de verdade, não só a visual. Corta cerca de 1,5
+   tela.
+2. **Cards só no `#o-que-atendo`**, que é o único bloco com itens realmente
+   paralelos. Aí o card volta a significar alguma coisa.
+3. **Separar os fundos**: hoje são três beges quase idênticos (`#fdfcf9`,
+   `#faf8f3`, `#f4f2ec`), sem contraste, e o site inteiro lê como uma seção só
+   e comprida.
+
+## Depois disso, na fila
+
+- `#para-quem`: conversa de chat que ocupa 2,4 telas; cortar para um trecho
+  curto e o resto em texto normal.
+- Badges de confiança (CRP, 50 minutos, online, sigilo) numa faixa fina abaixo
+  da hero.
+- Hero com a foto do Luque e headline direta, no lugar das cadeiras.
+- Um CTA por volta da tela 3: no mapa original havia um buraco da tela 0,6 até
+  a 7,1 sem nenhum botão.
+- Espaçamentos de rodapé e `#como-comecar`.
+
+## Rolagem
+
+| momento | telas no celular |
+| --- | --- |
+| v1.0 | 17,0 |
+| depois dos cortes commitados | 16,1 |
+| com o bloco novo + `#sobre` e `#como-funciona` refeitos | 17,3 |
+| meta | 10 |
+
+O bloco novo custou 1,6 tela e vale o custo. O caminho para a meta é a fusão
+das duas seções de perguntas e o corte de `#para-quem`.
+
+## Fora de escopo da v2.0
 
 - Número do WhatsApp ainda é placeholder em `lib/whatsapp.ts`
-  (`5500000000000`). Nenhum botão funciona de verdade até o Luque passar o chip.
-- Área de pagamento com liberação de calendário. Vale antes pesquisar como as
-  psicólogas concorrentes fazem: nenhuma das três referências tem preço,
-  formulário ou agendamento online, todas mandam para o WhatsApp.
-- Preço da sessão. Continua fora do site enquanto o Luque não definir.
-
-## Como medir
-
-O que fecha cada passo é a contagem de telas, não a impressão de que ficou
-menor. No mobile, com o site rodando:
-
-```js
-// no console do navegador, viewport de celular
-document.body.scrollHeight / window.innerHeight;
-```
+  (`5500000000000`). **Nenhum botão funciona de verdade até o Luque passar o
+  chip.**
+- Área de pagamento com liberação de calendário.
+- Preço da sessão, enquanto o Luque não definir.
